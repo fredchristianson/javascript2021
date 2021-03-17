@@ -1,0 +1,21 @@
+{
+  "name": "javascript2021",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Example code for what I've done in javascript recently",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fredchristianson/javascript2021.git"
+  },
+  "author": "Fred Christianson",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/fredchristianson/javascript2021/issues"
+  },
+  "homepage": "https://github.com/fredchristianson/javascript2021#readme"
+}

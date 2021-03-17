@@ -1,0 +1,3 @@
+[submodule "minimal-http-server"]
+	path = minimal-http-server
+	url = git@github.com:amitgupta15/minimal-http-server.git
