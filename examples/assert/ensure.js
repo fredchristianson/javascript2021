@@ -1,5 +1,11 @@
 import {AssertionError, default as assert} from './assert.js';
 
+/*
+* Ensure can be configured to work like Assert, or to return default values when a test failes.
+* The default is to throw exceptions when an assertion fails. 
+* Use setPrototypeMode(true) to enable default values rather than exceptions.
+*/
+
 export class EnsureError extends AssertionError {
     constructor(message) {
         super(message);
@@ -8,11 +14,11 @@ export class EnsureError extends AssertionError {
 
 export class Ensure {
     constructor() {
-        this.demoMode = false;
+        this.prototypeMode = false;
     }
 
-    setDemoMode(isDemo = true) {
-        this.demoMode = isDemo;
+    setPrototypeMode(isDemo = true) {
+        this.prototypeMode = isDemo;
     }
 
 
@@ -21,7 +27,7 @@ export class Ensure {
             assert.equal(val1,val2,message);
             return val1;
         } catch(err) {
-            if (this.demoMode) {
+            if (this.prototypeMode) {
                 return defaultValue;
             }
             throw err;
@@ -34,7 +40,7 @@ export class Ensure {
             assert.notEqual(val1,val2,message);
             return val1;
         } catch(err) {
-            if (this.demoMode) {
+            if (this.prototypeMode) {
                 return defaultValue;
             }
             throw err;
@@ -46,7 +52,7 @@ export class Ensure {
             assert.null(val1,message);
             return val1;
         } catch(err) {
-            if (this.demoMode) {
+            if (this.prototypeMode) {
                 return defaultValue;
             }
             throw err;
@@ -59,7 +65,7 @@ export class Ensure {
             assert.notNull(val1,message);
             return val1;
         } catch(err) {
-            if (this.demoMode) {
+            if (this.prototypeMode) {
                 return defaultValue;
             }
             throw err;
@@ -71,7 +77,7 @@ export class Ensure {
             assert.range(val,minValue,maxValue,message);
             return val;
         } catch(err) {
-            if (this.demoMode) {
+            if (this.prototypeMode) {
                 return defaultValue;
             }
             throw err;
@@ -83,7 +89,7 @@ export class Ensure {
             assert.notRange(val,minValue,maxValue,message);
             return val;
         } catch(err) {
-            if (this.demoMode) {
+            if (this.prototypeMode) {
                 return defaultValue;
             }
             throw err;

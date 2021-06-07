@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <style>
+            #log-messages {
+                height: 30%;
+                overflow: auto;
+                background-color: black;
+                color: white;
+                font-family: monospace;
+            }
+
+            .debug {
+                color: #00ff00;
+            }
+
+            .info {
+                color: #ffffff;
+            }
+            .warn {
+                color: #ffff00;
+            }
+
+            .error {
+                color: red;
+            }
+
+            #service-a-messages{ 
+                height: 30%;
+                overflow: auto;
+            }
+
+            #service-a-messages .log-message {
+                white-space: pre;
+            }
+            #service-a-messages .info {
+                color: #000077;
+            }
+            #service-a-messages .warn {
+                color: #aaaa00;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Extensible Logging Example</h1>
+        <h2>All Log Messages</h2>
+        <div id='log-messages'>
+
+        </div>
+        <fieldset>
+            <legend>TestApp + ServiceA Log</legend>
+            <div id='service-a-messages'>
+
+            </div>
+        </fieldset>
+    </body>
+    
+
+    <script type='module'>
+        import {Logger,  LOG_LEVEL} from './logger/logger.js';
+        import {ConsoleLogWriter} from './logger/console-log-writer.js';
+        import {ElementLogWriter} from './logger/element-log-writer.js';
+        import {LogFormatter} from './logger/log-formatter.js';
+        import {LogFilter} from './logger/log-filter.js';
+        import JSONLogFormatter from './logger/json-log-formatter.js';
+        import TestApp from './extensible-test-app.js';
+
+        const FORMAT = LogFormatter.LOG_MESSAGE_COMPONENTS;
+        const consoleLogWriter = new ConsoleLogWriter(); // use default formatter
+
+        const logFormatter = new LogFormatter([FORMAT.DATE," ",FORMAT.TIME," - ",FORMAT.LEVEL,": ",FORMAT.MODULE,": ",FORMAT.MESSAGE],
+                    {maxLength:100});
+
+        const elementLogWriter = new ElementLogWriter("#log-messages",logFormatter);
+
+        const serviceALogFormatter = new JSONLogFormatter(["(",FORMAT.MODULE,") ",FORMAT.TIME,": ",FORMAT.MESSAGE],
+                    {maxLength:100});
+        const serviceALogFilter = new LogFilter({
+            includeModules: [/.*App/,"ServiceA"],
+            level: LOG_LEVEL.INFO
+        });
+        const serviceALogWriter = new ElementLogWriter("#service-a-messages",serviceALogFormatter,serviceALogFilter);
+
+        const LOG = Logger.create("index.html",LOG_LEVEL.DEBUG);
+
+        import TestAppClass from './extensible-test-app.js';
+
+        LOG.debug("test debug message");
+        LOG.info("test info message");
+        LOG.warn("test warn message");
+        LOG.error("test error message");
+
+        const theApp = new TestAppClass();
+        theApp.doSomething("test",5);
+        theApp.doSomething("test",15);
+
+        const testObject = {
+            "name": "Fred Christianson",
+            "address": {
+                "street": "123 Main St",
+                "state": "FL",
+                "zip": "34236"
+            }
+        }
+        serviceALogFormatter.setMaxLength(1000);
+        theApp.doSomething(testObject,0);
+        const TESTLOG = Logger.create("VeryLongModuleNameToTestTruncation",LOG_LEVEL.DEBUG);
+        TESTLOG.debug("very long text to make the maxLength options get used. 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890")
+    </script>
+</html>

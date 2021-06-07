@@ -11,6 +11,7 @@
         const output = document.getElementById('output');
 
         function addOutput(message){
+            console.log(message);
             const child = document.createElement('div');
             child.innerText = message;
             output.appendChild(child);

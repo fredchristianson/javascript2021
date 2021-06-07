@@ -1,8 +1,41 @@
 <html>
+    <head>
+        <style>
+            li {
+                list-style: none;
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            li:nth-child(even) {
+                background-color: #cccccc;
+            }
+
+            li a {
+                flex: 0 0 20ch;
+            }
+
+            li span {
+                color: black;
+                flex: 1 1;
+            }
+        </style>
+    </head>
     <body>
+        <div id='error' style='color:red; display: none'>These examples must be loaded with an HTTP server.</div>
         <ul>
-            <li><a href='./assert/assert.html'>Assert</a></li>
-            <li><a href='./assert/ensure.html'>Ensure</a></li>
+            <li><a href='./modules/modules.html' target='run'>Modules</a><span>Example of using import and modules</span></li>
+            <li><a href='./assert/assert.html' target='run'>Assert</a><span>A simple Assert module.</span></li>
+            <li><a href='./assert/ensure.html' target='run'>Ensure</a><span>Similar to Assert, but allows setting defaults in "prototype mode".</span></li>
+            <li><a href='./logging/log-simple.html'>Logging</a><span>A simple logger that writes to console and &lt;div&gt;</span></li>
+            <li><a href='./logging/log-extensible.html'>Extensible Logging</a><span>Logger that can be extended to different output formats and destinations</span></li>
+            <li><a href='./testing/testing.html'>Testing</a><span>Modules to help test</span></li>
         </ul>
     </body>
+    <script>
+        if (location.protocol == 'file:') {
+            const err = document.getElementById('error');
+            err.style.display='block';
+        }
+    </script>
 </html>

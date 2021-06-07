@@ -1,0 +1,53 @@
+<html>
+    <body>
+        <div>
+            Some output is displayed below.  Look at the console to see more details.
+        </div>
+        <div id='output'>
+
+        </div>
+    </body>
+
+    <script> 
+        const output = document.getElementById('output');
+        function log(message) {
+            const logMessage = `modules.html: ${message}`;
+            console.log(logMessage);
+            const child = document.createElement('div');
+            child.innerText = logMessage;
+            output.appendChild(child);
+        }
+    </script>
+    <script type='module'>
+        // import the default "thing" person.js exports.  In this case it's the class Person
+        // the console shows that this import also loads address.js which is imported from person.js
+        // address.js is loaded an executed before person.js 
+        import Person from './person.js';
+        log("person loaded");
+        const firstPerson = new Person("Adam");
+        log(`Person created ${firstPerson.toString()}`);
+
+        // person.js exports the class Person, and also has a default export of that class.  so these 
+        // 2 statems would do the same things as import Person from './person.js'
+        // import {default as Person} from './person.js'
+        // import {Person} from './person.js'
+        // we can import the class multiple times with different names
+        //import {default as PersonClass} from './person.js'
+        //import {Person} from './person.js'
+
+        // person.js already imported address.js.  
+        // When it address.js imported again, the file is not loaded or executed.  we just get the same exports
+        import Address from './address.js';
+        const address = new Address("456 Canton St", "Roswell","GA","30075");
+        log(`Address created ${address.toString()}`);
+
+        import * as PersonModule from './person.js';
+
+    </script>
+
+    <script>
+        // this will fail because the script is not type 'module'
+        import assert from './Person.js';
+        log("this will not happen since import failed");
+    </script>
+</html>

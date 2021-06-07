@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <style>
+            #log-messages {
+                height: 80%;
+                overflow: auto;
+                background-color: black;
+            }
+
+            .debug {
+                color: #00ff00;
+            }
+
+            .info {
+                color: #ffffff;
+            }
+            .warn {
+                color: #ffff00;
+            }
+
+            .error {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Simple Logging Example</h1>
+        <div id='log-messages'>
+
+        </div>
+    </body>
+
+    <script type='module'>
+        import LOG from './simple/logger.js';
+        import TestAppClass from './simple-test-app.js';
+        const output = document.getElementById('output');
+
+        LOG.setLevel(LOG.DEBUG);
+        LOG.debug("test debug message");
+        LOG.info("test info message");
+        LOG.warn("test warn message");
+        LOG.error("test error message");
+
+        LOG.setLevel(LOG.WARN);
+        LOG.debug("test debug message at WARN level (should not see this)");
+        LOG.info("test info message at WARN level (should not see this)");
+        LOG.warn("test warn message at WARN level (should see this)");
+        LOG.error("test error message at WARN level (should not see this)");
+
+        function doSomething(str, num) {
+            LOG.info("doSomething called with "+str+", "+num);
+            for(var i=0;i<10;i++){
+                LOG.debug("only writen if set to debug level logging. String concatenation is always done though. "+i+"---"+num);
+                num = num * 2;
+            }
+        }
+
+        LOG.setLevel(LOG.INFO);
+        doSomething("test string value at LOG.INFO level",3.14);
+        LOG.info("function call has completed");
+        LOG.debug("should not see this");
+        LOG.setLevel(LOG.DEBUG);
+        LOG.debug("should see this");
+        doSomething("test string value at LOG.DEBUG level",2.71);
+
+        const theApp = new TestAppClass();
+        theApp.doSomething("test",5);
+        theApp.doSomething("test",15);
+    </script>
+</html>
